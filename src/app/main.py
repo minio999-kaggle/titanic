@@ -11,10 +11,10 @@ from sklearn.metrics import accuracy_score
 
 RANDOM_STATE = 42
 PATH = './data/train.csv'
-df = pd.read_csv(PATH)
+df_raw = pd.read_csv(PATH)
 
 
-def impute_age(dataframe, value):
+def impute_age(df, value):
     '''
     Replaces Nulls in column "Age" of a dataframe with the passed value
 
@@ -25,31 +25,32 @@ def impute_age(dataframe, value):
         pandas.DataFrame
     '''
 
-    dataframe['Age'] = dataframe["Age"].fillna(value)
-    return dataframe
+    df['Age'] = df["Age"].fillna(value)
+    return df
 
 
-def convert_sex(dataframe):
+def convert_sex(df):
     '''
-    Replacing sex in column "Sex" of a dataframe to 1 if it's male and 0 if it's female 
+    Replacing sex in column "Sex" of a dataframe to 1 if it's male and 0 if it's female
 
     Parameters:
         dataframe (pandas.DataFrame): Dataframe on which to operate
     Returns:
         pandas.DataFrame
     '''
-    
-    dataframe['is_male'] = 0
-    dataframe.loc[dataframe['Sex'] == 'male', 'is_male'] = 1
-    dataframe = dataframe.drop(columns=['Sex'])
-    return dataframe
+
+    df['is_male'] = 0
+    df.loc[df['Sex'] == 'male', 'is_male'] = 1
+    df = df.drop(columns=['Sex'])
+    return df
+
 
 
 features = ['Age', 'Sex', 'Pclass']
 LABEL = 'Survived'
 
-X = df[features]
-y = df[LABEL]
+X = df_raw[features]
+y = df_raw[LABEL]
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=RANDOM_STATE)
 
