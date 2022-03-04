@@ -44,6 +44,20 @@ def convert_sex(df):
     df = df.drop(columns=['Sex'])
     return df
 
+def transform_data(df, mean_age):
+    '''
+    Applying data cleaning functions to data sets
+
+    Paramters:
+        dataframe (pandas.DataFrame): Dataframe on which to operate
+        mean_age (float): Mean age of training data set
+    Retruns:
+        pandas.DataFrame
+    '''
+
+    df = impute_age(df, mean_age)
+    df = convert_sex(df)
+    return df
 
 
 features = ['Age', 'Sex', 'Pclass']
@@ -56,10 +70,8 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_
 
 mean_age = X_train['Age'].mean()
 
-X_train = impute_age(X_train, mean_age)
-X_train = convert_sex(X_train)
-X_test = impute_age(X_test, mean_age)
-X_test = convert_sex(X_test)
+X_train = transform_data(X_train, mean_age)
+X_test = transform_data(X_test, mean_age)
 
 clf_model = RandomForestClassifier(max_depth=4, random_state=RANDOM_STATE)
 clf_model.fit(X_train, y_train)
