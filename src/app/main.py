@@ -16,16 +16,29 @@ df = pd.read_csv(PATH)
 
 def impute_age(dataframe, value):
     '''
-    changing NaN values
+    Replaces Nulls in column "Age" of a dataframe with the passed value
+
+    Parameters:
+        dataframe (pandas.DataFrame): DataFrame on which to operate
+        value (float): Value used for imputation
+    Returns:
+        pandas.DataFrame
     '''
+
     dataframe['Age'] = dataframe["Age"].fillna(value)
     return dataframe
 
 
 def convert_sex(dataframe):
     '''
-    converting sex
+    Replacing sex in column "Sex" of a dataframe to 1 if it's male and 0 if it's female 
+
+    Parameters:
+        dataframe (pandas.DataFrame): Dataframe on which to operate
+    Returns:
+        pandas.DataFrame
     '''
+    
     dataframe['is_male'] = 0
     dataframe.loc[dataframe['Sex'] == 'male', 'is_male'] = 1
     dataframe = dataframe.drop(columns=['Sex'])
