@@ -9,6 +9,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
 
 
+RANDOM_STATE = 42
 PATH = './data/train.csv'
 df = pd.read_csv(PATH)
 
@@ -37,7 +38,7 @@ LABEL = 'Survived'
 X = df[features]
 y = df[LABEL]
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=RANDOM_STATE)
 
 mean_age = X_train['Age'].mean()
 
@@ -46,7 +47,7 @@ X_train = convert_sex(X_train)
 X_test = impute_age(X_test, mean_age)
 X_test = convert_sex(X_test)
 
-clf_model = RandomForestClassifier(max_depth=4, random_state=42)
+clf_model = RandomForestClassifier(max_depth=4, random_state=RANDOM_STATE)
 clf_model.fit(X_train, y_train)
 y_predict = clf_model.predict(X_test)
 model_acc = accuracy_score(y_test, y_predict)
