@@ -47,7 +47,7 @@ def convert_sex(df):
     df = df.drop(columns=['Sex'])
     return df
 
-def transform_data(df, mean_age):
+def transform_data(df, mean_age_value):
     '''
     Applying data cleaning functions to data sets
 
@@ -58,7 +58,7 @@ def transform_data(df, mean_age):
         pandas.DataFrame
     '''
 
-    df = impute_age(df, mean_age)
+    df = impute_age(df, mean_age_value)
     df = convert_sex(df)
     return df
 
@@ -77,7 +77,9 @@ X_train = transform_data(X_train, mean_age)
 X_test = transform_data(X_test, mean_age)
 
 clf_model = RandomForestClassifier(n_estimators=N_ESTIMATORS, bootstrap=True, criterion='entropy',
-                               min_samples_leaf=MIN_SAMPLES_LEAF, min_sample_split=MIN_SAMPLE_SPLIT, random_state=RANDOM_STATE)
+                                    min_samples_leaf=MIN_SAMPLES_LEAF,
+                                    min_samples_split=MIN_SAMPLE_SPLIT,
+                                    random_state=RANDOM_STATE)
 clf_model.fit(X_train, y_train)
 y_predict = clf_model.predict(X_test)
 model_acc = accuracy_score(y_test, y_predict)
