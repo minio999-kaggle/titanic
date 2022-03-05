@@ -10,6 +10,9 @@ from sklearn.metrics import accuracy_score
 
 
 RANDOM_STATE = 42
+MIN_SAMPLE_SPLIT=4
+MIN_SAMPLES_LEAF=5
+N_ESTIMATORS=100
 PATH = './data/train.csv'
 df_raw = pd.read_csv(PATH)
 
@@ -73,7 +76,8 @@ mean_age = X_train['Age'].mean()
 X_train = transform_data(X_train, mean_age)
 X_test = transform_data(X_test, mean_age)
 
-clf_model = RandomForestClassifier(max_depth=4, random_state=RANDOM_STATE)
+clf_model = RandomForestClassifier(n_estimators=N_ESTIMATORS, bootstrap=True, criterion='entropy',
+                               min_samples_leaf=MIN_SAMPLES_LEAF, min_sample_split=MIN_SAMPLE_SPLIT, random_state=RANDOM_STATE)
 clf_model.fit(X_train, y_train)
 y_predict = clf_model.predict(X_test)
 model_acc = accuracy_score(y_test, y_predict)
