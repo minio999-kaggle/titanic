@@ -134,3 +134,4 @@ data/*
 # jupyterlab
 .jupyter
 .local
+.bash_history
