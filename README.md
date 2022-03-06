@@ -6,7 +6,7 @@ Given a dataset of a subset of the Titanic's passengers predict whether they wil
 * Maciej Bialoglowski  ([@chemista](https://github.com/chemista))
 
 ## Method
-Belowe are provided steps that I followed for this Project.
+Below are provided steps that I followed for this Project.
 
 ### 1. **Data visualization**: Data analisys to understand features,missing values, mean values (for further use) and other usefull information.
 - Understanding features
@@ -42,7 +42,7 @@ df.info()
 | 10 | Cabin      |   204 non-null  |  object |
 | 11 | Embarked   |   889 non-null  |  object |
 
-We can clearle see that Age has some null values we'll need to fix it. Also we see that Sex is an object so we have to change it to int. Cabin has to much null values so we can bassicly dump it.
+We can clearly see that Age has some null values we'll need to fix it. Also we see that Sex is an object so we have to change it to int. Cabin has to much null values so we can bassicly dump it.
 - Getting better knowlage about data
 ```
 df.describe()
