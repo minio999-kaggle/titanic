@@ -8,7 +8,7 @@ Given a dataset of a subset of the Titanic's passengers predict whether they wil
 ## Method
 Below are provided steps that I followed for this Project.
 
-### 1. **Data visualization**: Data analisys to understand features,missing values, mean values (for further use) and other usefull information.
+### 1. **Data visualization**: Data analisys to understand features, missing values, mean values (for further use) and other usefull information.
 - Understanding features
     - **PassengerId**: ID of passenger
     - **Survived**: Value specifying if passanger survived ("1") or not ("0")
@@ -58,10 +58,10 @@ df.describe()
 | 75% |	668.500000 | 1.000000 |	3.000000 |	38.000000 |	1.000000 |	0.000000 |	31.000000 | 
 | max |	891.000000 | 1.000000 |	3.000000 |	80.000000 |	8.000000 |	6.000000 |	512.329200 | 
 
-Here we will want to take mean value of age and give null values it. Also there is no ridiculess thing that we want to get ride of (like age 300)
+Here we will want to take mean value of age and give it to null values in it. Also there is no ridiculess thing that we want to get ride of (like age 300)
 
 - Conclusion
-We have to process null values in Age simplest and used way is to fill them with mean value. We can come to a conclusion that some columns are useless in our prediction's like PassengerId, Name, Cabin, Ticket, Embarked.
+We have to process null values in Age. Simplest and used way is to fill them with mean value. We can come to a conclusion that some columns are useless in our prediction's like PassengerId, Name, Cabin, Ticket, Embarked.
 
 ### 2. **Preprocessing**: with the knowlage acquired with data visualization, we can apply it to dealing with missing values and specifying features that we want to use in our predictions
 
@@ -133,6 +133,6 @@ X_test = transform_data(X_test, mean_age)
 
 ## Installation instructions
 1. Install Python and clone this repository
-2. Open files, find cloned repository, open terminal inside that folder and use comman `./run.sh`
+2. Open files, find cloned repository, open terminal inside that folder and use command `./run.sh`
 
 to run the [jupyter](http://jupyter.org/)'s notebooks or mess with it yourself download docker, open powershell and run `.\jupyter-start.ps1`
