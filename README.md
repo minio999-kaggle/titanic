@@ -22,11 +22,11 @@ Below are provided steps that I followed for this Project.
     - **Cabin**: Cabin number
     - **Embarked**: Port of Embarkation (C = Cherbourg, Q = Queenstown, S = Southampton)
 - Looking for null values
-([Jupyters notebook](https://github.com/minio999-kaggle/titanic/blob/dev/playground/eda1.ipynb)) where its done.
+([Jupyters notebook](https://github.com/minio999-kaggle/titanic/blob/dev/playground/eda1.ipynb))
 
 We can clearly see that Age has some null values we'll need to fix it. Also we see that Sex is an object so we have to change it to int. Cabin has to much null values so we can bassicly dump it.
 - Getting better knowlage about data
-([Jupyters notebook](https://github.com/minio999-kaggle/titanic/blob/dev/playground/eda1.ipynb)) where its done.
+([Jupyters notebook](https://github.com/minio999-kaggle/titanic/blob/dev/playground/eda1.ipynb))
 
 Here we will want to take mean value of age and give it to null values in it. Also there is no ridiculess thing that we want to get ride of (like age 300)
 
@@ -36,14 +36,14 @@ We have to process null values in Age. Simplest and used way is to fill them wit
 ### 2. **Preprocessing**: with the knowlage acquired with data visualization, we can apply it to dealing with missing values and specifying features that we want to use in our predictions
 
 - Imputing Age
-([Jupyters notebook](https://github.com/minio999-kaggle/titanic/blob/readme/playground/simple_model.ipynb)) where its done.
+([Jupyters notebook](https://github.com/minio999-kaggle/titanic/blob/readme/playground/simple_model.ipynb))
 - Converting Sex 
-([Jupyters notebook](https://github.com/minio999-kaggle/titanic/blob/readme/playground/simple_model.ipynb)) where its done.
+([Jupyters notebook](https://github.com/minio999-kaggle/titanic/blob/readme/playground/simple_model.ipynb))
 
 - Spliting data into Test and Train
-([Jupyters notebook](https://github.com/minio999-kaggle/titanic/blob/readme/playground/simple_model.ipynb)) where its done.
+([Jupyters notebook](https://github.com/minio999-kaggle/titanic/blob/readme/playground/simple_model.ipynb))
 - Aplying Preproccesing to data
-([Jupyters notebook](https://github.com/minio999-kaggle/titanic/blob/readme/playground/simple_model.ipynb)) where its done.
+([Jupyters notebook](https://github.com/minio999-kaggle/titanic/blob/readme/playground/simple_model.ipynb))
 ## Folder Structures
 * `\` contains all of setup files
 * `\src\app` contains code
