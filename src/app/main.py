@@ -6,7 +6,7 @@ main module for app
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score
+from sklearn.model_selection import cross_val_score
 
 
 RANDOM_STATE = 42
@@ -81,6 +81,5 @@ clf_model = RandomForestClassifier(n_estimators=N_ESTIMATORS, bootstrap=True, cr
                                     min_samples_split=MIN_SAMPLE_SPLIT,
                                     random_state=RANDOM_STATE)
 clf_model.fit(X_train, y_train)
-y_predict = clf_model.predict(X_test)
-model_acc = accuracy_score(y_test, y_predict)
-print("Accuracy:", round(model_acc,2))
+scores = cross_val_score(clf_model, X_test, y_test, cv=10)
+print("Accuracy: %0.2f (+/- %0.2f)" %(scores.mean(), scores.std()*2))
