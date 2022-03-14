@@ -42,6 +42,8 @@ We have to process null values in Age. Simplest and used way is to fill them wit
 
 - Spliting data into Test and Train
 ([Jupyters notebook](https://github.com/minio999-kaggle/titanic/blob/readme/playground/simple_model.ipynb))
+- Applying Cross-Validation
+([Jupyters notebook](https://github.com/minio999-kaggle/titanic/blob/cross_validation/playground/cross_val.ipynb))
 - Aplying Preproccesing to data
 ([Jupyters notebook](https://github.com/minio999-kaggle/titanic/blob/readme/playground/simple_model.ipynb))
 ## Folder Structures
