@@ -89,8 +89,8 @@ for train_index, test_index in kf.split(X):
     X_test = impute_age(X_test, mean_age)
     X_test = convert_sex(X_test)
 
-    clf = RandomForestClassifier(n_estimators=60, bootstrap=True, criterion='entropy',
-                               min_samples_leaf=2, min_samples_split=5, random_state=42)
+    clf = RandomForestClassifier(n_estimators=N_ESTIMATORS, bootstrap=True, criterion='entropy',
+                               min_samples_leaf=MIN_SAMPLES_LEAF, min_samples_split=MIN_SAMPLE_SPLIT, random_state=RANDOM_STATE)
 
     clf.fit(X_train, y_train)
     y_predict = clf.predict(X_test)
