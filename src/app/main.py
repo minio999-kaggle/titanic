@@ -13,6 +13,7 @@ RANDOM_STATE = 42
 MIN_SAMPLE_SPLIT=4
 MIN_SAMPLES_LEAF=5
 N_ESTIMATORS=100
+N_SPLITS = 5
 PATH = './data/train.csv'
 df_raw = pd.read_csv(PATH)
 
@@ -70,9 +71,9 @@ X = df_raw[features]
 y = df_raw[LABEL]
 
 kf = KFold(
-    n_splits=5,
+    n_splits=N_SPLITS,
     shuffle=True,
-    random_state=46
+    random_state=RANDOM_STATE
 )
 
 scores = []
