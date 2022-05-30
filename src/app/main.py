@@ -7,7 +7,7 @@ import pandas as pd
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import KFold
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_scoreS
 
 RANDOM_STATE = 42
 MIN_SAMPLE_SPLIT=4
