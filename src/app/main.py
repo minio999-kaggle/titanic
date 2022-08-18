@@ -7,7 +7,7 @@ import pandas as pd
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import KFold
-from sklearn.metrics import accuracy_scoreS
+from sklearn.metrics import accuracy_score
 
 RANDOM_STATE = 42
 MIN_SAMPLE_SPLIT=4
@@ -91,7 +91,8 @@ for train_index, test_index in kf.split(X):
     X_test = convert_sex(X_test)
 
     clf = RandomForestClassifier(n_estimators=N_ESTIMATORS, bootstrap=True, criterion='entropy',
-                               min_samples_leaf=MIN_SAMPLES_LEAF, min_samples_split=MIN_SAMPLE_SPLIT, random_state=RANDOM_STATE)
+                                min_samples_leaf=MIN_SAMPLES_LEAF,
+                                min_samples_split=MIN_SAMPLE_SPLIT, random_state=RANDOM_STATE)
 
     clf.fit(X_train, y_train)
     y_predict = clf.predict(X_test)
