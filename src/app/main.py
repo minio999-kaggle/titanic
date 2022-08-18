@@ -73,7 +73,7 @@ def main():
     X = df_raw[features]
     y = df_raw[LABEL]
 
-    kf = KFold(
+    k_fold = KFold(
         n_splits=N_SPLITS,
         shuffle=True,
         random_state=RANDOM_STATE
@@ -81,7 +81,7 @@ def main():
 
     scores = []
 
-    for train_index, test_index in kf.split(X):
+    for train_index, test_index in k_fold.split(X):
         X_train, X_test = X.loc[train_index], X.loc[test_index]
         y_train, y_test = y.loc[train_index], y.loc[test_index]
 
