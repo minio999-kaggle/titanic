@@ -4,15 +4,16 @@ main module for app
 
 
 import pandas as pd
-from sklearn.model_selection import train_test_split
+import numpy as np
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import KFold
 from sklearn.metrics import accuracy_score
-
 
 RANDOM_STATE = 42
 MIN_SAMPLE_SPLIT=4
 MIN_SAMPLES_LEAF=5
 N_ESTIMATORS=100
+N_SPLITS = 5
 PATH = './data/train.csv'
 df_raw = pd.read_csv(PATH)
 
@@ -69,18 +70,39 @@ LABEL = 'Survived'
 X = df_raw[features]
 y = df_raw[LABEL]
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=RANDOM_STATE)
+kf = KFold(
+    n_splits=N_SPLITS,
+    shuffle=True,
+    random_state=RANDOM_STATE
+)
 
-mean_age = X_train['Age'].mean()
+scores = []
 
-X_train = transform_data(X_train, mean_age)
-X_test = transform_data(X_test, mean_age)
+for train_index, test_index in kf.split(X):
+    X_train, X_test = X.loc[train_index], X.loc[test_index]
+    y_train, y_test = y.loc[train_index], y.loc[test_index]
 
-clf_model = RandomForestClassifier(n_estimators=N_ESTIMATORS, bootstrap=True, criterion='entropy',
-                                    min_samples_leaf=MIN_SAMPLES_LEAF,
-                                    min_samples_split=MIN_SAMPLE_SPLIT,
-                                    random_state=RANDOM_STATE)
-clf_model.fit(X_train, y_train)
-y_predict = clf_model.predict(X_test)
-model_acc = accuracy_score(y_test, y_predict)
-print("Accuracy:", round(model_acc,2))
+    mean_age = X_train['Age'].mean()
+
+    X_train = impute_age(X_train, mean_age)
+    X_train = convert_sex(X_train)
+
+    X_test = impute_age(X_test, mean_age)
+    X_test = convert_sex(X_test)
+
+    clf = RandomForestClassifier(n_estimators=N_ESTIMATORS, bootstrap=True, criterion='entropy',
+                                min_samples_leaf=MIN_SAMPLES_LEAF,
+                                min_samples_split=MIN_SAMPLE_SPLIT, random_state=RANDOM_STATE)
+
+    clf.fit(X_train, y_train)
+    y_predict = clf.predict(X_test)
+
+    acc_score = round(accuracy_score(y_test, y_predict),3)
+
+    print(acc_score)
+
+    scores.append(acc_score)
+
+print()
+print("Average:", round(100*np.mean(scores), 1), "%")
+print("Std:", round(100*np.std(scores), 1), "%")
