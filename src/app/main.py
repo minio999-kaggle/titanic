@@ -63,46 +63,52 @@ def transform_data(df, mean_age_value):
     df = convert_sex(df)
     return df
 
+def main():
+    '''
+    Main Function
+    '''
+    features = ['Age', 'Sex', 'Pclass']
+    LABEL = 'Survived'
 
-features = ['Age', 'Sex', 'Pclass']
-LABEL = 'Survived'
+    X = df_raw[features]
+    y = df_raw[LABEL]
 
-X = df_raw[features]
-y = df_raw[LABEL]
+    kf = KFold(
+        n_splits=N_SPLITS,
+        shuffle=True,
+        random_state=RANDOM_STATE
+    )
 
-kf = KFold(
-    n_splits=N_SPLITS,
-    shuffle=True,
-    random_state=RANDOM_STATE
-)
+    scores = []
 
-scores = []
+    for train_index, test_index in kf.split(X):
+        X_train, X_test = X.loc[train_index], X.loc[test_index]
+        y_train, y_test = y.loc[train_index], y.loc[test_index]
 
-for train_index, test_index in kf.split(X):
-    X_train, X_test = X.loc[train_index], X.loc[test_index]
-    y_train, y_test = y.loc[train_index], y.loc[test_index]
+        mean_age = X_train['Age'].mean()
 
-    mean_age = X_train['Age'].mean()
+        X_train = impute_age(X_train, mean_age)
+        X_train = convert_sex(X_train)
 
-    X_train = impute_age(X_train, mean_age)
-    X_train = convert_sex(X_train)
+        X_test = impute_age(X_test, mean_age)
+        X_test = convert_sex(X_test)
 
-    X_test = impute_age(X_test, mean_age)
-    X_test = convert_sex(X_test)
+        clf = RandomForestClassifier(n_estimators=N_ESTIMATORS, bootstrap=True, criterion='entropy',
+                                    min_samples_leaf=MIN_SAMPLES_LEAF,
+                                    min_samples_split=MIN_SAMPLE_SPLIT, random_state=RANDOM_STATE)
 
-    clf = RandomForestClassifier(n_estimators=N_ESTIMATORS, bootstrap=True, criterion='entropy',
-                                min_samples_leaf=MIN_SAMPLES_LEAF,
-                                min_samples_split=MIN_SAMPLE_SPLIT, random_state=RANDOM_STATE)
+        clf.fit(X_train, y_train)
+        y_predict = clf.predict(X_test)
 
-    clf.fit(X_train, y_train)
-    y_predict = clf.predict(X_test)
+        acc_score = round(accuracy_score(y_test, y_predict),3)
 
-    acc_score = round(accuracy_score(y_test, y_predict),3)
+        print(acc_score)
 
-    print(acc_score)
+        scores.append(acc_score)
 
-    scores.append(acc_score)
+    print()
+    print("Average:", round(100*np.mean(scores), 1), "%")
+    print("Std:", round(100*np.std(scores), 1), "%")
 
-print()
-print("Average:", round(100*np.mean(scores), 1), "%")
-print("Std:", round(100*np.std(scores), 1), "%")
+if __name__ == "__main__":
+    main()
