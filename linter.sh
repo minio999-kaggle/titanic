@@ -1,5 +1,5 @@
 #!/bin/bash -e
-declare threshold=${1:-'9.00'}
+declare threshold=${1:-'7.00'}
 declare path=${2:-'./src'}
 
 pip install pylint==2.10.2
