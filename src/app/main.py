@@ -81,6 +81,11 @@ def set_title(df):
     df.replace({'Title': mapping}, inplace=True)
     return df
 
+def title_encode(df):
+    label_encoder = LabelEncoder()
+    df['Title'] = label_encoder.fit_transform(df['Title'])
+    return df
+
 def transform_data(df, mean_age_value):
     '''
     Applying data cleaning functions to data sets
@@ -95,6 +100,8 @@ def transform_data(df, mean_age_value):
     df = count_relatives_on_board(df)
     df = impute_age(df, mean_age_value)
     df = convert_sex(df)
+    df = title_encode(df)
+    df.drop(USELESS_FEATURES, inplace=True,axis=1)
     return df
 
 def main():
@@ -103,10 +110,11 @@ def main():
     '''
 
     LABEL = 'Survived'
-
-    X = df_raw.copy()
+    mean_age = df_raw['Age'].mean()
+    df = transform_data(df_raw, mean_age)
+    X = df
     X = X.drop('Survived', axis=1)
-    y = df_raw['Survived']
+    y = df['Survived']
 
     k_fold = KFold(
         n_splits=N_SPLITS,
@@ -119,19 +127,6 @@ def main():
     for train_index, test_index in k_fold.split(X):
         X_train, X_test = X.loc[train_index], X.loc[test_index]
         y_train, y_test = y.loc[train_index], y.loc[test_index]
-
-        mean_age = X_train['Age'].mean()
-
-        X_train = transform_data(X_train, mean_age)
-
-        X_test = transform_data(X_test, mean_age)
-
-        X_train.drop(USELESS_FEATURES, inplace=True,axis=1)
-        X_test.drop(USELESS_FEATURES, inplace=True,axis=1)
-        #print(X_train.columns)
-        label_encoder = LabelEncoder()
-        X_train['Title'] = label_encoder.fit_transform(X_train['Title'])
-        X_test['Title'] = label_encoder.fit_transform(X_test['Title'])
 
         clf = RandomForestClassifier(n_estimators=N_ESTIMATORS, bootstrap=True, criterion='entropy',
                                     min_samples_leaf=MIN_SAMPLES_LEAF,
