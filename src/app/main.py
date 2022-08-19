@@ -8,12 +8,15 @@ import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import KFold
 from sklearn.metrics import accuracy_score
+from sklearn.preprocessing import LabelEncoder
 
 RANDOM_STATE = 42
 MIN_SAMPLE_SPLIT=4
 MIN_SAMPLES_LEAF=5
 N_ESTIMATORS=100
 N_SPLITS = 5
+USELESS_FEATURES = ["PassengerId", "Name", "Ticket", "Cabin",
+                    "Parch", "SibSp", 'Embarked', 'Fare']
 PATH = './data/train.csv'
 df_raw = pd.read_csv(PATH)
 
@@ -48,6 +51,36 @@ def convert_sex(df):
     df = df.drop(columns=['Sex'])
     return df
 
+def count_relatives_on_board(df):
+    '''
+    Counting Relatives on board based of sibsp and parch columns
+
+    Paramters:
+        dataframe (pandas.DataFrame): Dataframe on which to operate
+    Retruns:
+        pandas.DataFrame
+    '''
+
+    df["RelativesOnboard"] = df["SibSp"] + df["Parch"]
+    return df
+
+def set_title(df):
+    '''
+    Changing name titles to cryptonims
+
+    Paramters:
+        dataframe (pandas.DataFrame): Dataframe on which to operate
+    Retruns:
+        pandas.DataFrame
+    '''
+
+    mapping = {'Mlle': 'Miss', 'Major': 'Mr', 'Col': 'Mr', 'Sir': 'Mr', 'Don': 'Mr', 'Mme': 'Miss',
+      'Jonkheer': 'Mr', 'Lady': 'Mrs', 'Capt': 'Mr', 'Countess': 'Mrs', 'Ms': 'Miss', 'Dona': 'Mrs'}
+
+    df['Title'] = df['Name'].str.extract('([A-Za-z]+)\.', expand=True)
+    df.replace({'Title': mapping}, inplace=True)
+    return df
+
 def transform_data(df, mean_age_value):
     '''
     Applying data cleaning functions to data sets
@@ -58,7 +91,8 @@ def transform_data(df, mean_age_value):
     Retruns:
         pandas.DataFrame
     '''
-
+    df = set_title(df)
+    df = count_relatives_on_board(df)
     df = impute_age(df, mean_age_value)
     df = convert_sex(df)
     return df
@@ -67,11 +101,11 @@ def main():
     '''
     Main Function
     '''
-    features = ['Age', 'Sex', 'Pclass']
+
     LABEL = 'Survived'
 
-    X = df_raw[features]
-    y = df_raw[LABEL]
+    X = df_raw.drop('Survived', 1)
+    y = df_raw['Survived']
 
     k_fold = KFold(
         n_splits=N_SPLITS,
@@ -87,11 +121,16 @@ def main():
 
         mean_age = X_train['Age'].mean()
 
-        X_train = impute_age(X_train, mean_age)
-        X_train = convert_sex(X_train)
+        X_train = transform_data(X_train, mean_age)
 
-        X_test = impute_age(X_test, mean_age)
-        X_test = convert_sex(X_test)
+        X_test = transform_data(X_test, mean_age)
+
+        X_train.drop(USELESS_FEATURES, inplace=True,axis=1)
+        X_test.drop(USELESS_FEATURES, inplace=True,axis=1)
+        #print(X_train.columns)
+        label_encoder = LabelEncoder()
+        X_train['Title'] = label_encoder.fit_transform(X_train['Title'])
+        X_test['Title'] = label_encoder.fit_transform(X_test['Title'])
 
         clf = RandomForestClassifier(n_estimators=N_ESTIMATORS, bootstrap=True, criterion='entropy',
                                     min_samples_leaf=MIN_SAMPLES_LEAF,
