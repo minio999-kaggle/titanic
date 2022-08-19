@@ -104,7 +104,8 @@ def main():
 
     LABEL = 'Survived'
 
-    X = df_raw.drop('Survived', 1)
+    X = df_raw.copy()
+    X = X.drop('Survived', axis=1)
     y = df_raw['Survived']
 
     k_fold = KFold(
