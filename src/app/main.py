@@ -207,7 +207,7 @@ def main():
 
     std_scaler = StandardScaler()
     X = std_scaler.fit_transform(X)
-    X_test = std_scaler.transform(X_test)
+    X_test_kaggle = std_scaler.transform(X_test_kaggle)
 
     k_fold = KFold(
         n_splits=N_SPLITS,
